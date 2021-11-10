@@ -12,7 +12,7 @@ from imageio import imread
 # To display the webcam feed
 FRAME_WINDOW = st.image([])
 
-
+danger= ["gun", "woman"]
 def run_app():
     # sidebar
     st.sidebar.image("../assets/logo.png")
@@ -49,17 +49,21 @@ def run_app():
         # img = img.resize((224, 224))
         pred = cap_gen(frame)
         print(pred)
+        
         csvw.write(pred)
+        # csvw.alert(pred)
         caption = " "
         caption.join(pred)
         st.write(caption)
         time.sleep(5)
     vid.release()
     cv2.destroyAllWindows()
+    
 
 
 def main():
     run_app()
+
 
 
 @st.cache(show_spinner=False)
@@ -118,6 +122,16 @@ class CSVWorker:
             csvwriter = csv.writer(csvfile)
             # writing data rows
             csvwriter.writerow(entry)
+
+    #alert
+    
+        y= set(pred)
+        if y.intersection(set(danger)):
+
+            container = st.container()
+            container.write("This is inside the container...")
+ 
+
 
 
 if __name__ == "__main__":
